@@ -22,7 +22,7 @@ spec:
       source:
         repoURL: https://github.com/IronPhysique/argocd-devops.git
         targetRevision: HEAD
-        path: charts/kube-prometheus-stack     # ✅ use path instead of chart
+        path: ../charts/kube-prometheus-stack    
         helm:
           releaseName: kube-prometheus-stack
       destination:
