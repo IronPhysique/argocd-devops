@@ -16,7 +16,7 @@ spec:
               values: ["in-cluster", "mgmt"]   # 🔹 exclude mgmt cluster (and in-cluster)
   template:
     metadata:
-      name: '{{name}}-monitoring'
+      name: '{{name}}-monitoring-stack'
     spec:
       project: global-project
       source:

@@ -31,10 +31,6 @@ dependencies:
   name: prometheus-windows-exporter
   repository: https://prometheus-community.github.io/helm-charts
   version: 0.12.*
-description: kube-prometheus-stack collects Kubernetes manifests, Grafana dashboards,
-  and Prometheus rules combined with documentation and scripts to provide easy to
-  operate end-to-end Kubernetes cluster monitoring with Prometheus using the Prometheus
-  Operator.
 home: https://github.com/prometheus-operator/kube-prometheus
 icon: https://raw.githubusercontent.com/prometheus/prometheus.github.io/master/assets/prometheus_logo-cb55bb5c346.png
 keywords:
@@ -42,31 +38,6 @@ keywords:
 - prometheus
 - kube-prometheus
 kubeVersion: '>=1.25.0-0'
-maintainers:
-- email: andrew@quadcorps.co.uk
-  name: andrewgkew
-  url: https://github.com/andrewgkew
-- email: gianrubio@gmail.com
-  name: gianrubio
-  url: https://github.com/gianrubio
-- email: github.gkarthiks@gmail.com
-  name: gkarthiks
-  url: https://github.com/gkarthiks
-- email: kube-prometheus-stack@sisti.pt
-  name: GMartinez-Sisti
-  url: https://github.com/GMartinez-Sisti
-- email: github@jkroepke.de
-  name: jkroepke
-  url: https://github.com/jkroepke
-- email: scott@r6by.com
-  name: scottrigby
-  url: https://github.com/scottrigby
-- email: miroslav.hadzhiev@gmail.com
-  name: Xtigyro
-  url: https://github.com/Xtigyro
-- email: quentin.bisson@gmail.com
-  name: QuentinBisson
-  url: https://github.com/QuentinBisson
 name: kube-prometheus-stack
 sources:
 - https://github.com/prometheus-community/helm-charts
