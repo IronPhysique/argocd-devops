@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: kube-prometheus-stack
+  namespace: argocd
+spec:
+  generators:
+    - clusters: {}   # Deploy to all registered clusters
+  template:
+    metadata:
+      name: '{{name}}-monitoring'
+    spec:
+      project: global-project
+      source:
+        repoURL: https://prometheus-community.github.io/helm-charts
+        chart: kube-prometheus-stack
+        targetRevision: 65.1.1
+      destination:
+        server: '{{server}}'
+        namespace: kube-prometheus-stack
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
