@@ -1,56 +1,127 @@
-# values.yaml — minimal test configuration
+
+nameOverride: ""
 namespaceOverride: "monitoring"
 
 crds:
   enabled: true
 
+global:
+  rbac:
+    create: true
+  imageRegistry: ""
+  imagePullSecrets: []
+
+kubernetesServiceMonitors:
+  enabled: true
+
+# Core components
+prometheusOperator:
+  enabled: true
+  serviceAccount:
+    create: true
+  image:
+    registry: quay.io
+    repository: prometheus-operator/prometheus-operator
+    tag: ""
+    pullPolicy: IfNotPresent
+
+prometheus:
+  enabled: true
+  service:
+    enabled: true
+    port: 9090
+    type: ClusterIP
+  serviceMonitor:
+    selfMonitor: true
+  prometheusSpec:
+    replicas: 1
+    retention: 10d
+    resources: {}
+    storageSpec: {}
+    image:
+      registry: quay.io
+      repository: prometheus/prometheus
+      tag: v3.7.2
+      pullPolicy: IfNotPresent
+  serviceAccount:
 alertmanager:
   enabled: true
   service:
-    type: NodePort
-    nodePort: 30903
-
+    enabled: true
+    port: 9093
+    type: ClusterIP
+  serviceMonitor:
+    selfMonitor: true
+  alertmanagerSpec:
+    replicas: 1
+    retention: 120h
+    image:
+      registry: quay.io
+      repository: prometheus/alertmanager
+      tag: v0.28.1
+      pullPolicy: IfNotPresent
+  serviceAccount:
 grafana:
   enabled: true
-  adminUser: admin
-  adminPassword: admin
   service:
-    type: NodePort
-    nodePort: 30300
+    portName: http-web
   ingress:
     enabled: false
+  sidecar:
+    dashboards:
+      enabled: true
+      label: grafana_dashboard
+      searchNamespace: ALL
+    datasources:
+      enabled: true
+      name: Prometheus
+      uid: prometheus
+      alertmanager:
+        enabled: true
+        uid: alertmanager
 
-prometheus:
-  prometheusSpec:
-    serviceMonitorSelectorNilUsesHelmValues: false
-    podMonitorSelectorNilUsesHelmValues: false
-    retention: 12h
-    scrapeInterval: 30s
-    enableAdminAPI: true
-  service:
-    type: NodePort
-    nodePort: 30900
-
-defaultRules:
-  create: true
-  rules:
-    alertmanager: true
-    node: true
-    prometheus: true
-
+# Common cluster exporters
 kubeApiServer:
   enabled: true
+  serviceMonitor:
+    enabled: true
+    jobLabel: component
+    selector:
+      matchLabels:
+        component: apiserver
+        provider: kubernetes
+
 kubelet:
   enabled: true
+  namespace: kube-system
   serviceMonitor:
+    enabled: true
+    kubelet: true
     https: true
-kubeControllerManager:
-  enabled: true
-coreDns:
-  enabled: true
-kubeProxy:
-  enabled: true
+    insecureSkipVerify: true
+
 kubeStateMetrics:
   enabled: true
+  kube-state-metrics:
+    prometheus:
+      monitor:
+        enabled: true
+
 nodeExporter:
   enabled: true
+  prometheus:
+    monitor:
+      enabled: true
+
+# Lightweight defaults: keep RBAC and service accounts created
+prometheus:
+  serviceAccount:
+    create: true
+
+alertmanager:
+  serviceAccount:
+    create: true
+
+grafana:
+  serviceAccount:
+    create: true
