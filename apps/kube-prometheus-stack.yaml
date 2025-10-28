@@ -5,16 +5,26 @@ metadata:
   namespace: argocd
 spec:
   generators:
-    - clusters: {}   # Deploy to all registered clusters
+    - clusters:
+        selector:
+          matchExpressions:
+            - key: argocd.argoproj.io/secret-type
+              operator: In
+              values: ["cluster"]
+            - key: name
+              operator: NotIn
+              values: ["in-cluster", "mgmt"]   # 🔹 exclude mgmt cluster (and in-cluster)
   template:
     metadata:
       name: '{{name}}-monitoring'
     spec:
       project: global-project
       source:
-        repoURL: https://github.com/IronPhysique/argocd-devops
-        chart: ../charts/kube-prometheus-stack
-        targetRevision: 65.1.1
+        repoURL: https://github.com/IronPhysique/argocd-devops.git
+        targetRevision: HEAD
+        path: charts/kube-prometheus-stack     # ✅ use path instead of chart
+        helm:
+          releaseName: kube-prometheus-stack
       destination:
         server: '{{server}}'
         namespace: kube-prometheus-stack
