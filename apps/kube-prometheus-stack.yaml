@@ -12,8 +12,8 @@ spec:
     spec:
       project: global-project
       source:
-        repoURL: https://prometheus-community.github.io/helm-charts
-        chart: kube-prometheus-stack
+        repoURL: https://github.com/IronPhysique/argocd-devops
+        chart: apps/charts/kube-prometheus-stack
         targetRevision: 65.1.1
       destination:
         server: '{{server}}'
