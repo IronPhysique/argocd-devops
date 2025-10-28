@@ -21,6 +21,8 @@ prometheusOperator:
     create: true
   admissionWebhooks:
     enabled: true
+    patch:
+      enabled: true
   image:
     registry: quay.io
     repository: prometheus-operator/prometheus-operator
